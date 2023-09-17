@@ -2,6 +2,8 @@
 
 /** @var \Laravel\Lumen\Routing\Router $router */
 
+use Illuminate\Http\Request;
+
 /*
 |--------------------------------------------------------------------------
 | Application Routes
@@ -15,4 +17,13 @@
 
 $router->get('/', function () use ($router) {
     return $router->app->version();
+});
+
+
+$router->group(['prefix' => 'api'], function () use ($router) {
+    $router->get('/version', function (Request $request) use ($router) {
+        return [
+            'version' => $router->app->version(),
+        ];
+    });
 });
