@@ -2,9 +2,9 @@ version: '3'
 services:
     app:
         build: ./docker/app
+        container_name: php
         volumes:
             - ./src/:/var/www/html
-        container_name: php
     web:
         image: nginx:1.25
         container_name: nginx
@@ -17,13 +17,17 @@ services:
         depends_on:
             - app
     db:
-        image: postgres:16.0
-        container_name: postgres
-        ports:
-          - 5432:5432
+        image: mysql:8.1
+        container_name: mysql
         environment:
-          - POSTGRES_USER=root
-          - POSTGRES_PASSWORD=Rootp123@
-          - POSTGRES_DB=lumen
+            MYSQL_ROOT_PASSWORD: root
+            MYSQL_DATABASE: lumen
+            MYSQL_USER: lumen_user
+            MYSQL_PASSWORD: Rootp123@
+            TZ: 'Asia/Tokyo'
+        command: mysqld --character-set-server=utf8 --collation-server=utf8_unicode_ci
         volumes:
-          - /var/lib/postgresql/data
+            - /var/lib/mysql
+            - ./docker/db/my.cnf:/etc/mysql/conf.d/my.cnf
+        ports:
+            - 3306:3306
