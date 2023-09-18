@@ -1,5 +1,4 @@
 FROM php:8.3-rc-fpm
-COPY php.ini /usr/local/etc/php/
 
 RUN apt-get update && apt-get install -y zlib1g-dev libzip-dev && docker-php-ext-install zip pdo_mysql
 RUN apt-get clean
@@ -14,4 +13,5 @@ ENV COMPOSER_ALLOW_SUPERUSER 1
 ENV COMPOSER_HOME /composer
 ENV PATH $PATH:/composer/vendor/bin
 
+COPY php.ini /usr/local/etc/php/
 WORKDIR /var/www/html
